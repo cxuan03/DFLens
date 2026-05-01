@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFLens — AI Deepfake Detection</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<!-- ════════════════ NAVBAR ════════════════ -->
+<nav class="navbar">
+  <a class="nav-logo" href="#">DF<span>Lens</span></a>
+  <ul class="nav-links">
+    <li><a href="#detect">Detect</a></li>
+    <li><a href="#why">Why It Matters</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#policy">Policy</a></li>
+  </ul>
+  <a class="nav-btn" href="#detect">Start Detecting →</a>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero">
+  <div class="hero-streaks">
+    <svg viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <line x1="-100" y1="500" x2="900" y2="-50"  stroke="rgba(56,189,248,0.18)" stroke-width="2"/>
+      <line x1="100"  y1="600" x2="1000" y2="50"  stroke="rgba(56,189,248,0.22)" stroke-width="2.5"/>
+      <line x1="400"  y1="700" x2="1300" y2="150" stroke="rgba(100,200,255,0.14)" stroke-width="1.5"/>
+      <line x1="700"  y1="700" x2="1500" y2="200" stroke="rgba(100,200,255,0.1)" stroke-width="1"/>
+      <circle cx="220" cy="200" r="2" fill="rgba(200,240,255,0.7)"/>
+      <circle cx="580" cy="130" r="1.5" fill="rgba(200,240,255,0.5)"/>
+      <circle cx="950" cy="280" r="2.5" fill="rgba(200,240,255,0.6)"/>
+      <circle cx="1150" cy="110" r="1.5" fill="rgba(200,240,255,0.5)"/>
+      <circle cx="350" cy="400" r="2" fill="rgba(200,240,255,0.45)"/>
+      <circle cx="820" cy="450" r="1.5" fill="rgba(200,240,255,0.4)"/>
+      <circle cx="1280" cy="230" r="2" fill="rgba(200,240,255,0.55)"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-chip"><span class="chip-dot"></span>AI-Powered Detection &nbsp;·&nbsp; Live</div>
+    <h1 class="hero-title">Detect Deepfakes<br><span class="accent">Instantly & Accurately</span></h1>
+    <p class="hero-sub">DFLens uses CLIP ViT-B/32 deep learning to verify whether an image or video is real or AI-generated — in seconds</p>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-num">93.5%</div><div class="h-lbl">Accuracy</div></div>
+      <div class="h-stat"><div class="h-num">98.65%</div><div class="h-lbl">AUC-ROC</div></div>
+      <div class="h-stat"><div class="h-num">6,000+</div><div class="h-lbl">Frames</div></div>
+      <div class="h-stat"><div class="h-num">&lt; 2s</div><div class="h-lbl">Speed</div></div>
+    </div>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#detect">Start Detecting →</a>
+      <a class="btn-secondary" href="#why">Why It Matters</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ DETECT ════════════════ -->
+<section class="detect-section" id="detect">
+  <div class="detect-card">
+    <div class="detect-head">
+      <div>
+        <div class="detect-head-title">🔬 Deepfake Detection Engine</div>
+        <div class="detect-head-desc">Upload an image or video — AI will analyse and return a REAL / FAKE verdict with confidence score</div>
+      </div>
+      <div class="live-badge"><span class="live-dot-anim"></span>Model Active</div>
+    </div>
+    <div class="detect-body">
+      <div class="how-box">
+        <strong>What does this tool do?</strong><br>
+        DFLens uses <strong>CLIP ViT-B/32</strong>, trained on FaceForensics++ C23 and CelebDF-v2. It detects subtle AI manipulation artefacts invisible to the human eye, and returns a <strong>REAL or FAKE verdict</strong> with confidence score.
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-btns">
+        <button class="tab-btn active" onclick="switchTab('image')">🖼️ Image Detection</button>
+        <button class="tab-btn" onclick="switchTab('video')">🎬 Video Detection</button>
+        <button class="tab-btn" onclick="switchTab('voice')">🎙️ Voice Detection</button>
+
+      </div>
+
+      <!-- IMAGE TAB -->
+      <div class="tab-pane active" id="tab-image">
+        <div class="how-box">
+          <strong>🖼️ Image Deepfake Detection</strong><br>
+          Upload an image — DFLens runs <strong>two checks simultaneously</strong>: it analyses the <strong>face pixels</strong> for AI face-swapping, and scans the <strong>whole image</strong> for editing or tampering. Supports JPG, JPEG, PNG. Use this to detect NCII (non-consensual intimate images) or fake photos of public figures.
+        </div>
+        <div class="two-col">
+          <!-- Left: upload -->
+          <div class="col-panel">
+            <div class="col-header">
+              <div class="upload-label">Upload an Image</div>
+              <p class="col-sub">JPG, JPEG, PNG — Max 200MB</p>
+            </div>
+            <div class="upload-zone" id="img-zone">
+              <input type="file" id="img-input" accept=".jpg,.jpeg,.png" onchange="previewImage(this)">
+              <span class="upload-icon">🖼️</span>
+              <div class="upload-hint">Drop image here or <strong>click to browse</strong></div>
+            </div>
+            <img id="img-preview" class="preview-img" style="margin-top:1rem;" alt="preview">
+            <button class="analyse-btn" id="img-btn" onclick="analyseImage()" style="margin-top:1.2rem;display:block;margin-left:auto;margin-right:auto;">
+              <span class="spinner" id="img-spinner"></span>
+              Analyse Image
+            </button>
+          </div>
+          <!-- Right: result -->
+          <div class="col-panel">
+            <div class="col-header">
+              <div class="upload-label">Analysis Result</div>
+              <p class="col-sub">Results will appear here after analysis</p>
+            </div>
+            <div id="img-empty" style="flex:1;min-height:180px;border:1.5px dashed rgba(100,180,255,0.22);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:#4a7a9b;font-size:0.88rem;background:rgba(6,14,42,0.4);">
+              <span style="font-size:2rem;opacity:0.3">🖼️</span>Upload an image to see the result
+            </div>
+            <div class="result-box" id="img-result"></div>
+            <div id="img-forgery-result" style="display:none;margin-top:1rem;"></div>
+            <button class="pdf-btn" id="img-pdf-btn" onclick="downloadPDF('image')">📄 Download PDF Report</button>
+          </div>
+        </div>
+        <!-- Grad-CAM -->
+        <div class="gradcam-row" id="img-gradcam-row" style="display:none">
+          <div class="gradcam-box">
+            <div class="gradcam-label">Original Image</div>
+            <img id="gradcam-orig" class="gradcam-img" alt="original">
+          </div>
+          <div class="gradcam-box">
+            <div class="gradcam-label">Grad-CAM Heatmap — AI Attention Regions</div>
+            <img id="gradcam-heat" class="gradcam-img" alt="heatmap">
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDEO TAB -->
+      <div class="tab-pane" id="tab-video">
+        <div class="how-box">
+          <strong>🎬 Video Deepfake Detection</strong><br>
+          Upload a video — DFLens samples <strong>16 frames</strong> and analyses each frame for AI face-swapping using <strong>CLIP ViT-B/32</strong>, trained on FaceForensics++ C23 and CelebDF-v2. Use this to verify suspicious videos of CEOs, politicians, or public figures. Supports MP4, AVI, MOV.
+        </div>
+        <div class="two-col">
+          <div class="col-panel">
+            <div class="col-header">
+              <div class="upload-label">Upload a Video</div>
+              <p class="col-sub">MP4, AVI, MOV — 16 frames sampled</p>
+            </div>
+            <div class="upload-zone" id="vid-zone">
+              <input type="file" id="vid-input" accept=".mp4,.avi,.mov" onchange="previewVideo(this)">
+              <span class="upload-icon">🎬</span>
+              <div class="upload-hint">Drop video here or <strong>click to browse</strong></div>
+            </div>
+            <div style="position:relative;width:100%;margin-top:1rem;">
+              <video id="vid-preview" controls playsinline preload="auto" style="display:none;width:100%;border-radius:10px;border:1px solid rgba(100,180,255,0.2);background:#000;"></video>
+              <img id="vid-poster" style="display:none;width:100%;border-radius:10px;border:1px solid rgba(100,180,255,0.2);pointer-events:none;position:absolute;top:0;left:0;" alt="Video preview frame">
+            </div>
+            <button class="analyse-btn" id="vid-btn" onclick="analyseVideo()" style="margin-top:1.2rem;display:block;margin-left:auto;margin-right:auto;">
+              <span class="spinner" id="vid-spinner"></span>
+              Analyse Video
+            </button>
+          </div>
+          <div class="col-panel">
+            <div class="col-header">
+              <div class="upload-label">Analysis Result</div>
+              <p class="col-sub">Results will appear here after analysis</p>
+            </div>
+            <div id="vid-empty" style="flex:1;min-height:180px;border:1.5px dashed rgba(100,180,255,0.22);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:#4a7a9b;font-size:0.88rem;background:rgba(6,14,42,0.4);">
+              <span style="font-size:2rem;opacity:0.3">🎬</span>Upload a video to see the result
+            </div>
+            <div class="result-box" id="vid-result"></div>
+            <button class="pdf-btn" id="vid-pdf-btn" onclick="downloadPDF('video')">📄 Download PDF Report</button>
+          </div>
+        </div>
+        <div id="vid-frames" style="display:none;margin-top:1.5rem;">
+          <div class="gradcam-label">Sampled Frames</div>
+          <div class="frames-grid" id="frames-grid"></div>
+        </div>
+      </div>
+
+
+
+      <!-- VOICE TAB -->
+      <div class="tab-pane" id="tab-voice">
+        <div class="how-box">
+          <strong>🎙️ AI Voice / Audio Deepfake Detection</strong><br>
+          Upload an audio file — DFLens analyses the <strong>spectral and prosodic features</strong> of the voice to detect signs of AI synthesis or voice cloning. Supports MP3, WAV, M4A.
+        </div>
+        <div class="two-col">
+          <!-- Left: upload -->
+          <div class="col-panel">
+            <div class="col-header">
+              <div class="upload-label">Upload Audio</div>
+              <p class="col-sub">MP3, WAV, M4A — Max 100MB</p>
+            </div>
+            <div class="upload-zone" id="aud-zone">
+              <input type="file" id="aud-input" accept=".mp3,.wav,.m4a,.ogg" onchange="previewAudio(this)">
+              <span class="upload-icon">🎙️</span>
+              <div class="upload-hint">Drop audio here or <strong>click to browse</strong></div>
+            </div>
+            <audio id="aud-preview" controls style="display:none;width:100%;margin-top:1rem;border-radius:10px;"></audio>
+            <div id="aud-waveform" style="display:none;margin-top:1rem;">
+              <div class="gradcam-label">Waveform Preview</div>
+              <canvas id="waveform-canvas" style="width:100%;height:60px;border-radius:8px;background:rgba(6,14,42,0.6);border:1px solid rgba(100,180,255,0.15);"></canvas>
+            </div>
+            <button class="analyse-btn" id="aud-btn" onclick="analyseAudio()" style="margin-top:1.2rem;display:block;margin-left:auto;margin-right:auto;">
+              <span class="spinner" id="aud-spinner"></span>
+              Analyse Voice
+            </button>
+          </div>
+          <!-- Right: result -->
+          <div class="col-panel">
+            <div class="col-header">
+              <div class="upload-label">Analysis Result</div>
+              <p class="col-sub">Results will appear here after analysis</p>
+            </div>
+            <div id="aud-empty" style="flex:1;min-height:180px;border:1.5px dashed rgba(100,180,255,0.22);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:#4a7a9b;font-size:0.88rem;background:rgba(6,14,42,0.4);">
+              <span style="font-size:2rem;opacity:0.3">🎙️</span>Upload audio to see the result
+            </div>
+            <div class="result-box" id="aud-result"></div>
+            <button class="pdf-btn" id="aud-pdf-btn" onclick="downloadPDF('voice')">📄 Download PDF Report</button>
+          </div>
+        </div>
+        <!-- Feature breakdown -->
+        <div id="aud-features" style="display:none;margin-top:1.5rem;">
+          <div class="gradcam-label">Feature Analysis</div>
+          <div class="audio-features-grid" id="features-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ WHY IT MATTERS ════════════════ -->
+<section class="sec-alt sec-wrap" id="why">
+  <div class="sec-inner">
+    <div class="sec-label">The Problem</div>
+    <h2 class="sec-title">Why Deepfake Detection Matters</h2>
+    <p class="sec-sub">AI-generated deepfakes are spreading at unprecedented speed — and the human eye can no longer keep up.</p>
+    <div class="cards-3">
+      <div class="icard"><div class="ic-icon">📰</div><div class="ic-title">Misinformation Crisis</div><div class="ic-text">Deepfake videos of politicians and public figures are weaponised to spread false narratives and manipulate elections worldwide.</div></div>
+      <div class="icard"><div class="ic-icon">💸</div><div class="ic-title">Financial Fraud</div><div class="ic-text">In 2024, a Hong Kong employee was tricked into transferring $25M via a deepfake video call impersonating the company CFO.</div></div>
+      <div class="icard"><div class="ic-icon">🧠</div><div class="ic-title">Humans Cannot Detect Them</div><div class="ic-text">Studies show humans correctly identify deepfakes only 54% of the time — barely better than random chance.</div></div>
+      <div class="icard"><div class="ic-icon">📈</div><div class="ic-title">Exponential Growth</div><div class="ic-text">The number of deepfakes online doubles every 6 months. Over 500,000 deepfake videos are shared on social media every day.</div></div>
+      <div class="icard"><div class="ic-icon">🔒</div><div class="ic-title">Identity & Biometric Fraud</div><div class="ic-text">Deepfake technology is used to bypass facial recognition systems and commit identity theft at scale.</div></div>
+      <div class="icard"><div class="ic-icon">⚖️</div><div class="ic-title">Legal Challenges</div><div class="ic-text">Deepfakes are being submitted as false evidence in court. Reliable AI detection tools are now essential for justice systems.</div></div>
+    </div>
+    <div class="div-line"></div>
+    <div class="sec-label">Recent Incidents</div>
+    <h2 class="sec-title">Deepfakes in the News</h2>
+    <p class="sec-sub">Real-world cases that highlight the urgency of this technology.</p>
+    <div class="cards-3">
+      <div class="icard"><span class="news-tag">Finance</span><div class="news-title">Worker Tricked into $25M Transfer via Deepfake Call</div><div class="news-desc">A Hong Kong finance employee attended a video conference with deepfake versions of colleagues and transferred HK$200M to fraudsters.</div><div class="news-date">Feb 2024 · South China Morning Post</div></div>
+      <div class="icard"><span class="news-tag">Politics</span><div class="news-title">AI Voice Clone of US President Used in Robocall Attack</div><div class="news-desc">AI-cloned robocalls impersonating President Biden's voice told New Hampshire Democrats not to vote in the primary election.</div><div class="news-date">Jan 2024 · BBC News</div></div>
+      <div class="icard"><span class="news-tag">Research</span><div class="news-title">Humans Identify Deepfakes Correctly Only 54% of the Time</div><div class="news-desc">A UCL study found people can barely distinguish real from AI-generated faces better than chance, underlining the need for automated tools.</div><div class="news-date">2024 · Nature Scientific Reports</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ HOW IT WORKS ════════════════ -->
+<section class="sec-wrap" id="how">
+  <div class="sec-inner">
+    <div class="sec-label">The Technology</div>
+    <h2 class="sec-title">How DFLens Works</h2>
+    <p class="sec-sub">A four-step AI pipeline from media upload to detection verdict.</p>
+    <div class="cards-4">
+      <div class="icard"><div class="step-num">1</div><div class="ic-title">Upload Media</div><div class="ic-text">User uploads an image (JPG/PNG) or video (MP4/MOV) through the web interface.</div></div>
+      <div class="icard"><div class="step-num">2</div><div class="ic-title">Frame Extraction</div><div class="ic-text">For videos, 16 frames are evenly sampled across the full duration for comprehensive coverage.</div></div>
+      <div class="icard"><div class="step-num">3</div><div class="ic-title">AI Classification</div><div class="ic-text">CLIP ViT-B/32 analyses each frame, detecting subtle AI manipulation artefacts invisible to humans.</div></div>
+      <div class="icard"><div class="step-num">4</div><div class="ic-title">Final Verdict</div><div class="ic-text">Majority voting across all frames produces a REAL/FAKE verdict with a full confidence score.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ POLICY ════════════════ -->
+<section class="sec-alt sec-wrap" id="policy">
+  <div class="sec-inner">
+    <div class="sec-label">Legal</div>
+    <h2 class="sec-title" style="margin-bottom:1.5rem">Terms & Privacy Policy</h2>
+    <div class="policy-grid">
+      <details>
+        <summary>📋 Terms of Use</summary>
+        <div class="policy-body">
+          <strong>1. Purpose</strong>DFLens is for educational and research awareness purposes only.
+          <strong>2. Accuracy Limitation</strong>Results are probabilistic (93% accuracy). Do NOT use as sole evidence in legal or professional decisions.
+          <strong>3. Acceptable Use</strong>Do not use to harass individuals, create deepfakes, or bypass security systems.
+          <strong>4. Disclaimer</strong>Provided "as is" without warranty. Developers hold no liability for decisions made based on output.
+        </div>
+      </details>
+      <details>
+        <summary>🔒 Privacy Policy</summary>
+        <div class="policy-body">
+          <strong>1. No Data Storage</strong>Uploaded images and videos are NOT stored or logged. All media is processed in-memory and immediately discarded.
+          <strong>2. No Personal Data</strong>No personally identifiable information is collected. No account or login required.
+          <strong>3. Local Processing</strong>All AI inference runs locally. No data is transmitted to third-party services.
+          <strong>4. No Tracking</strong>No advertising or tracking cookies are used.
+        </div>
+      </details>
+      <details>
+        <summary>⚠️ Disclaimer</summary>
+        <div class="policy-body">
+          <strong>Academic Project</strong>DFLens is developed for INT4203E — Artificial Intelligence coursework. Not a commercial product.
+          <strong>Limitations</strong>93% accuracy — approximately 7% of results may be incorrect. Trained on Celeb-DF v2 (celebrity faces). Results on non-celebrity media may vary. Always verify with multiple sources.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">DF<span>Lens</span></div>
+        <p class="footer-desc">AI-powered deepfake detection using CLIP ViT-B/32, trained on FaceForensics++ C23 and CelebDF-v2</p>
+      </div>
+      <div>
+        <div class="f-heading">Navigation</div>
+        <a class="f-link" href="#detect">Detect</a>
+        <a class="f-link" href="#why">Why It Matters</a>
+        <a class="f-link" href="#how">How It Works</a>
+        <a class="f-link" href="#policy">Policy</a>
+      </div>
+      <div>
+        <div class="f-heading">Legal</div>
+        <a class="f-link" href="#policy">Terms of Use</a>
+        <a class="f-link" href="#policy">Privacy Policy</a>
+        <a class="f-link" href="#policy">Disclaimer</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 DFLens · INT4203E Individual Assignment</span>
+      <span>CLIP ViT-B/32 · FaceForensics++ · CelebDF-v2 · PyTorch · Flask</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════ JAVASCRIPT ════════════════ -->
+<script>
+// ── State ─────────────────────────────────────
+let imgData = null;
+let vidData = null;
+let audData = null;
+let imgFile = null;
+
+// ── Tabs ──────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── Image preview ──────────────────────────────
+function previewImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  imgFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('img-preview');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    document.getElementById('img-zone').querySelector('.upload-hint').textContent = file.name;
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('img-btn').disabled = false;
+  // Clear results when new file selected
+  document.getElementById('img-result').innerHTML = '';
+  document.getElementById('img-pdf-btn').style.display = 'none';
+  document.getElementById('img-gradcam-row').style.display = 'none';
+  document.getElementById('img-empty').style.display = 'flex';
+  const forgeryBox = document.getElementById('img-forgery-result');
+  if (forgeryBox) { forgeryBox.style.display = 'none'; forgeryBox.innerHTML = ''; }
+  imgData = null;
+}
+
+// ── Video preview ──────────────────────────────
+let vidFile = null;
+function previewVideo(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  // 验证文件类型，拒绝图片等非视频文件
+  const validTypes = ['video/mp4', 'video/avi', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'];
+  const validExts = ['.mp4', '.avi', '.mov', '.mkv'];
+  const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+  if (!validTypes.includes(file.type) && !validExts.includes(ext)) {
+    showUploadModal('Invalid File Type', 'Please upload a video file (MP4, AVI, MOV). Images are not accepted in the Video tab.');
+    input.value = '';
+    return;
+  }
+
+  vidFile = file;
+  const vid = document.getElementById('vid-preview');
+  const vidPoster = document.getElementById('vid-poster');
+
+  // Revoke previous object URL to free memory
+  if (vid._objectURL) { URL.revokeObjectURL(vid._objectURL); vid._objectURL = null; }
+
+  // Immediately show blob URL (works for browser-native codecs like H.264 MP4)
+  vid._objectURL = URL.createObjectURL(file);
+  vid.src = vid._objectURL;
+  vid.load();
+  vid.style.display = 'block';
+  if (vidPoster) vidPoster.style.display = 'none';
+
+  // Update upload zone hint to show filename (zone stays visible for re-upload)
+  document.getElementById('vid-zone').querySelector('.upload-hint').innerHTML = file.name + ' <strong>(click to change)</strong>';
+
+  // Upload to server — get poster frame + transcoded stream URL
+  const fd = new FormData();
+  fd.append('file', file);
+  const thisFile = file;
+  fetch('/upload/video', { method: 'POST', body: fd })
+    .then(r => r.json())
+    .then(data => {
+      if (vidFile !== thisFile) return;
+      // Set poster image as the video poster attribute (visible before play)
+      if (data.poster_b64) {
+        vid.poster = 'data:image/jpeg;base64,' + data.poster_b64;
+        // Also show a static poster image in case video element stays black
+        if (vidPoster) {
+          vidPoster.src = 'data:image/jpeg;base64,' + data.poster_b64;
+          vidPoster.style.display = 'block';
+        }
+      }
+      if (data.token) {
+        // Swap to server-transcoded H.264 stream for guaranteed playback
+        vid.src = '/stream/video/' + data.token;
+        vid.load();
+        vid._streamToken = data.token;
+        // Hide static poster once video can actually play
+        vid.addEventListener('playing', function onPlay() {
+          vid.removeEventListener('playing', onPlay);
+          if (vidPoster) vidPoster.style.display = 'none';
+        });
+      }
+    })
+    .catch(() => {}); // keep blob URL on failure
+
+  document.getElementById('vid-btn').disabled = false;
+  // Clear results when new file selected
+  document.getElementById('vid-result').innerHTML = '';
+  document.getElementById('vid-pdf-btn').style.display = 'none';
+  document.getElementById('vid-empty').style.display = 'flex';
+  document.getElementById('vid-frames').style.display = 'none';
+  vidData = null;
+}
+
+// ── Audio preview ──────────────────────────────
+function previewAudio(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  // 验证文件类型，拒绝非音频文件
+  const validTypes = ['audio/mpeg', 'audio/wav', 'audio/mp4', 'audio/ogg', 'audio/x-wav', 'audio/mp3'];
+  const validExts = ['.mp3', '.wav', '.m4a', '.ogg'];
+  const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+  if (!validTypes.includes(file.type) && !validExts.includes(ext)) {
+    showUploadModal('Invalid File Type', 'Please upload an audio file (MP3, WAV, M4A). Images and videos are not accepted here.');
+    input.value = '';
+    return;
+  }
+  const aud = document.getElementById('aud-preview');
+  aud.src = URL.createObjectURL(file);
+  aud.style.display = 'block';
+  document.getElementById('aud-zone').querySelector('.upload-hint').textContent = file.name;
+  document.getElementById('aud-btn').disabled = false;
+  document.getElementById('aud-result').style.display = 'none';
+  document.getElementById('aud-empty').style.display = 'flex';
+  document.getElementById('aud-features').style.display = 'none';
+  drawWaveform(file);
+}
+
+function drawWaveform(file) {
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buffer = await ctx.decodeAudioData(e.target.result);
+      const data = buffer.getChannelData(0);
+      const canvas = document.getElementById('waveform-canvas');
+      const c = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth * 2;
+      canvas.height = 120;
+      c.clearRect(0, 0, canvas.width, canvas.height);
+      const step = Math.ceil(data.length / canvas.width);
+      const amp = canvas.height / 2;
+      c.strokeStyle = '#38bdf8';
+      c.lineWidth = 1;
+      c.beginPath();
+      for (let i = 0; i < canvas.width; i++) {
+        let min = 1, max = -1;
+        for (let j = 0; j < step; j++) {
+          const d = data[i * step + j] || 0;
+          if (d < min) min = d;
+          if (d > max) max = d;
+        }
+        c.moveTo(i, (1 + min) * amp);
+        c.lineTo(i, (1 + max) * amp);
+      }
+      c.stroke();
+      document.getElementById('aud-waveform').style.display = 'block';
+    } catch(e) { /* skip waveform if audio decode fails */ }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// ── Analyse image ──────────────────────────────
+async function analyseImage() {
+  const file = imgFile || document.getElementById('img-input').files[0];
+  if (!file) { showUploadModal('No Image Uploaded', 'Please upload a JPG, JPEG or PNG image before running analysis.'); return; }
+  const validExts = ['.jpg', '.jpeg', '.png'];
+  const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+  if (!validExts.includes(ext)) { showUploadModal('Invalid File Type', 'Please upload a JPG, JPEG or PNG image. Audio and video files are not accepted here.'); return; }
+  setLoading('img', true);
+  document.getElementById('img-empty').style.display = 'none';
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const [res1, res2] = await Promise.all([
+  fetch('/predict/image', { method: 'POST', body: fd }),
+  fetch('/predict/forgery', { method: 'POST', body: fd })
+]);
+const data = await res1.json();
+const forgeryData = await res2.json();
+if (data.error) { alert('Error: ' + data.error); return; }
+imgData = data;
+imgData.filename = file.name;
+// Store forgery analysis for PDF report
+imgData.forgery_label = forgeryData.label;
+imgData.forgery_confidence = forgeryData.confidence;
+imgData.forgery_features = forgeryData.features;
+
+// ── Build result in new order ──────────────────────────────
+const faceSwapped = data.label === 'FAKE';
+const imageEdited = forgeryData.label === 'TAMPERED';
+const faceFakeProb = data.fake_prob;
+const faceRealProb = data.real_prob;
+const forgeryFakeProb = forgeryData.label === 'TAMPERED' ? forgeryData.confidence : 100 - forgeryData.confidence;
+const forgeryRealProb = 100 - forgeryFakeProb;
+
+let conclusion = '';
+if (faceSwapped && imageEdited) {
+  conclusion = '⚠️ <strong>High Risk — Likely Deepfake</strong> — This image shows signs of both face-swapping and photo editing.';
+} else if (faceSwapped && !imageEdited) {
+  conclusion = '⚠️ <strong>Face Swap Detected</strong> — The face appears to have been replaced with an AI-generated or another person\'s face.';
+} else if (!faceSwapped && imageEdited) {
+  conclusion = '⚠️ <strong>Photo Editing Detected</strong> — No face swap found, but the image appears to have been edited.';
+} else {
+  conclusion = '✅ <strong>No Manipulation Detected</strong> — Both the face and image content appear to be genuine.';
+}
+
+const overallFake = faceSwapped || imageEdited;
+const resultBox = document.getElementById('img-result');
+resultBox.style.display = 'block';
+document.getElementById('img-empty').style.display = 'none';
+resultBox.innerHTML = `
+  <div class="${overallFake ? 'result-fake' : 'result-real'}">
+
+    <!-- Step 1: Two angles -->
+    <div style="margin-bottom:1.2rem;">
+      <div style="font-size:0.85rem;color:${overallFake ? '#ffaaaa' : '#a0f0c0'};letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:0.8rem;">🔍 How We Analysed This Image</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div style="background:rgba(${faceSwapped ? '180,40,40' : '20,80,40'},0.4);border:1.5px solid rgba(${faceSwapped ? '255,107,107' : '81,207,102'},0.5);border-radius:12px;padding:1.1rem 1.3rem;">
+          <div style="font-size:0.82rem;color:#90d0ff;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin-bottom:0.4rem;">🤖 Face Pixels</div>
+          <div style="font-size:0.88rem;color:#c0d8f0;margin-bottom:0.7rem;line-height:1.4;">Was the face AI-generated or swapped?</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem;color:#7aa8cc;">REAL</span>
+            <span style="font-size:0.75rem;color:#7aa8cc;">FAKE</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:100px;height:8px;margin-bottom:0.6rem;overflow:hidden;">
+            <div style="height:100%;width:${faceFakeProb}%;background:${faceSwapped ? 'linear-gradient(90deg,#ef4444,#f87171)' : 'linear-gradient(90deg,#10b981,#34d399)'};border-radius:100px;transition:width 0.8s;"></div>
+          </div>
+          <div style="font-weight:700;color:${faceSwapped ? '#ff6b6b' : '#51cf66'};font-size:1.05rem;">${faceSwapped ? '⚠️ ' + faceFakeProb + '% Fake' : '✅ ' + faceRealProb + '% Real'}</div>
+        </div>
+        <div style="background:rgba(${imageEdited ? '180,40,40' : '20,80,40'},0.4);border:1.5px solid rgba(${imageEdited ? '255,107,107' : '81,207,102'},0.5);border-radius:12px;padding:1.1rem 1.3rem;">
+          <div style="font-size:0.82rem;color:#90d0ff;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;margin-bottom:0.4rem;">🖼️ Whole Image</div>
+          <div style="font-size:0.88rem;color:#c0d8f0;margin-bottom:0.7rem;line-height:1.4;">Has the image been edited or tampered?</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem;color:#7aa8cc;">CLEAN</span>
+            <span style="font-size:0.75rem;color:#7aa8cc;">TAMPERED</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);border-radius:100px;height:8px;margin-bottom:0.6rem;overflow:hidden;">
+            <div style="height:100%;width:${forgeryFakeProb}%;background:${imageEdited ? 'linear-gradient(90deg,#ef4444,#f87171)' : 'linear-gradient(90deg,#10b981,#34d399)'};border-radius:100px;transition:width 0.8s;"></div>
+          </div>
+          <div style="font-weight:700;color:${imageEdited ? '#ff6b6b' : '#51cf66'};font-size:1.05rem;">${imageEdited ? '⚠️ ' + forgeryFakeProb + '% Tampered' : '✅ ' + forgeryRealProb + '% Clean'}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Final verdict -->
+    <div style="border-top:1.5px solid rgba(255,255,255,0.15);padding-top:1.1rem;">
+      <div style="font-size:0.85rem;color:${overallFake ? '#ffaaaa' : '#a0f0c0'};letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:0.6rem;">Final Verdict</div>
+      <div class="res-icon">${overallFake ? '⚠️' : '✅'}</div>
+      <div class="res-label ${overallFake ? 'fake' : 'real'}">${overallFake ? 'FAKE' : 'AUTHENTIC'}</div>
+      <div class="res-sub" style="margin-top:0.8rem;font-size:0.95rem;line-height:1.6;">${conclusion}</div>
+    </div>
+
+  </div>
+`;
+
+const forgeryBox = document.getElementById('img-forgery-result');
+if (forgeryBox) { forgeryBox.style.display = 'none'; forgeryBox.innerHTML = ''; }
+    if (data.gradcam_b64) {
+      document.getElementById('img-gradcam-row').style.display = 'flex';
+      const origEl = document.getElementById('gradcam-orig');
+      const heatEl = document.getElementById('gradcam-heat');
+      origEl.src = 'data:image/jpeg;base64,' + data.image_b64;
+      origEl.style.display = 'block';
+      heatEl.src = 'data:image/jpeg;base64,' + data.gradcam_b64;
+      heatEl.style.display = 'block';
+    }
+    document.getElementById('img-pdf-btn').style.display = 'inline-block';
+  } catch(e) {
+    alert('Request failed: ' + e.message);
+  } finally {
+    setLoading('img', false);
+  }
+}
+
+// ── Analyse video ──────────────────────────────
+async function analyseVideo() {
+  const file = document.getElementById('vid-input').files[0];
+  if (!file) { showUploadModal('No Video Uploaded', 'Please upload an MP4, AVI or MOV video before running analysis.'); return; }
+
+  // 双重验证
+  const validTypes = ['video/mp4', 'video/avi', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'];
+  const validExts = ['.mp4', '.avi', '.mov', '.mkv'];
+  const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+  if (!validTypes.includes(file.type) && !validExts.includes(ext)) {
+    showUploadModal('Invalid File Type', 'Please upload a video file (MP4, AVI, MOV). Images are not accepted here.');
+    return;
+  }
+
+  setLoading('vid', true);
+  document.getElementById('vid-empty').style.display = 'none';
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const res = await fetch('/predict/video', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.error) { alert('Error: ' + data.error); return; }
+    vidData = data;
+    vidData.filename = file.name;
+    showResult('vid', data);
+    const extraHtml = `
+      <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
+        <div style="text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.4rem;color:#7dd3fc;">${data.frames_analysed}</div>
+          <div style="font-size:0.7rem;color:#4a7a9b;letter-spacing:0.1em;text-transform:uppercase;">Frames Analysed</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.4rem;color:#34d399;">${data.real_frames}</div>
+          <div style="font-size:0.7rem;color:#4a7a9b;letter-spacing:0.1em;text-transform:uppercase;">Real Frames</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.4rem;color:#f87171;">${data.fake_frames}</div>
+          <div style="font-size:0.7rem;color:#4a7a9b;letter-spacing:0.1em;text-transform:uppercase;">Fake Frames</div>
+        </div>
+      </div>`;
+    document.getElementById('vid-result').insertAdjacentHTML('beforeend', extraHtml);
+    if (data.sample_frames && data.sample_frames.length > 0) {
+      document.getElementById('vid-frames').style.display = 'block';
+      const grid = document.getElementById('frames-grid');
+      grid.innerHTML = '';
+      data.sample_frames.forEach(f => {
+        const cls = f.label === 'REAL' ? 'real' : 'fake';
+        const displayProb = f.label === 'REAL'
+          ? (f.real_prob ?? (100 - f.fake_prob))
+          : f.fake_prob;
+        grid.innerHTML += `
+          <div class="frame-card">
+            <img src="data:image/jpeg;base64,${f.b64}" alt="frame">
+            <span class="frame-badge ${cls}">${f.label} ${displayProb}%</span>
+          </div>`;
+      });
+    }
+    document.getElementById('vid-pdf-btn').style.display = 'inline-block';
+    // If server returned a transcoded video, use it as the preview source
+    // (handles AVI/MOV that Chrome can't play natively via blob URL)
+    if (data.video_b64) {
+      const vid = document.getElementById('vid-preview');
+      vid.src = 'data:video/mp4;base64,' + data.video_b64;
+      vid.load();
+      vid.style.display = 'block';
+    }
+  } catch(e) {
+    alert('Request failed: ' + e.message);
+  } finally {
+    setLoading('vid', false);
+  }
+}
+
+// ── Analyse audio (voice deepfake) ────────────
+async function analyseAudio() {
+  const file = document.getElementById('aud-input').files[0];
+  if (!file) { showUploadModal('No Audio Uploaded', 'Please upload an MP3, WAV or M4A audio file before running analysis.'); return; }
+
+  // 双重验证
+  const validTypes = ['audio/mpeg', 'audio/wav', 'audio/mp4', 'audio/ogg', 'audio/x-wav', 'audio/mp3'];
+  const validExts = ['.mp3', '.wav', '.m4a', '.ogg'];
+  const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+  if (!validTypes.includes(file.type) && !validExts.includes(ext)) {
+    showUploadModal('Invalid File Type', 'Please upload an audio file (MP3, WAV, M4A). Images are not accepted here.');
+    return;
+  }
+
+  setLoading('aud', true);
+  document.getElementById('aud-empty').style.display = 'none';
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const res = await fetch('/predict/audio', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.error) { alert('Error: ' + data.error); return; }
+    showResult('aud', data);
+    audData = data;
+    audData.filename = file.name;
+    document.getElementById('aud-pdf-btn').style.display = 'inline-block';
+    // Show feature breakdown
+    if (data.features) {
+      document.getElementById('aud-features').style.display = 'block';
+      const grid = document.getElementById('features-grid');
+      grid.innerHTML = '';
+      data.features.forEach(f => {
+        const cls = f.suspicious ? 'fake' : 'real';
+        const icon = f.suspicious ? '⚠️' : '✓';
+        grid.innerHTML += `
+          <div class="feature-card">
+            <div class="feature-icon ${cls}">${icon}</div>
+            <div class="feature-name">${f.name}</div>
+            <div class="feature-val">${f.value}</div>
+            <div class="feature-desc">${f.description}</div>
+          </div>`;
+      });
+    }
+  } catch(e) {
+    alert('Request failed: ' + e.message);
+  } finally {
+    setLoading('aud', false);
+  }
+}
+
+// ── Show result ────────────────────────────────
+function showResult(prefix, data) {
+  const box = document.getElementById(prefix + '-result');
+  const isReal = data.label === 'REAL';
+  const icon = isReal ? '✅' : '⚠️';
+  const verdict = isReal ? 'AUTHENTIC' : 'DEEPFAKE DETECTED';
+  const cls = isReal ? 'real' : 'fake';
+  const conf = data.confidence ?? (isReal ? data.real_prob : data.fake_prob) ?? 0;
+  const realProb = data.real_prob ?? (isReal ? conf : 100 - conf) ?? 0;
+  const fakeProb = data.fake_prob ?? (isReal ? 100 - conf : conf) ?? 0;
+  const desc = isReal
+    ? `Confidence ${conf}% — This content appears to be genuine`
+    : `Confidence ${conf}% — This content appears to be AI-generated`;
+  box.innerHTML = `
+    <div class="result-${cls}">
+      <div class="res-icon">${icon}</div>
+      <div class="res-label ${cls}">${verdict}</div>
+      <div class="res-sub">${desc}</div>
+      <div class="prob-bars">
+        <div class="prob-row">
+          <span class="p-lbl">REAL</span>
+          <div class="p-bg"><div class="p-fill real" style="width:${realProb}%"></div></div>
+          <span class="p-pct">${realProb}%</span>
+        </div>
+        <div class="prob-row">
+          <span class="p-lbl">FAKE</span>
+          <div class="p-bg"><div class="p-fill fake" style="width:${fakeProb}%"></div></div>
+          <span class="p-pct">${fakeProb}%</span>
+        </div>
+      </div>
+    </div>`;
+  box.style.display = 'block';
+}
+
+// — Forgery Detection —
+function previewForgery(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById('forgery-preview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function analyseForgery() {
+  const input = document.getElementById('forgery-input');
+  if (!input.files[0]) { showUploadModal('No Image Uploaded', 'Please upload a JPG, JPEG or PNG image before running forgery analysis.'); return; }
+  const spinner = document.getElementById('forgery-spinner');
+  const btn = document.getElementById('analyse-forgery');
+  spinner.style.display = 'inline-block';
+  btn.disabled = true;
+  const formData = new FormData();
+  formData.append('file', input.files[0]);
+  try {
+    const res = await fetch('/predict/forgery', { method: 'POST', body: formData });
+    const data = await res.json();
+    document.getElementById('forgery-result-col').style.display = 'block';
+    document.getElementById('forgery-empty').style.display = 'none';
+    const verdict = document.getElementById('forgery-verdict');
+    const isFake = data.label === 'TAMPERED';
+    const cls = isFake ? 'fake' : 'real';
+    const icon = isFake ? '⚠️' : '✅';
+    const label = isFake ? 'TAMPERED' : 'AUTHENTIC';
+    const desc = isFake
+      ? `Confidence ${data.confidence}% — This content appears to be tampered`
+      : `Confidence ${data.confidence}% — This content appears to be genuine`;
+    const realProb = data.real_prob ?? (isFake ? 100 - data.confidence : data.confidence);
+    const fakeProb = data.fake_prob ?? (isFake ? data.confidence : 100 - data.confidence);
+    verdict.innerHTML = `
+      <div class="result-${cls}">
+        <div class="res-icon">${icon}</div>
+        <div class="res-label ${cls}">${label}</div>
+        <div class="res-sub">${desc}</div>
+        <div class="prob-bars">
+          <div class="prob-row">
+            <span class="p-lbl">REAL</span>
+            <div class="p-bg"><div class="p-fill real" style="width:${realProb}%"></div></div>
+            <span class="p-pct">${realProb}%</span>
+          </div>
+          <div class="prob-row">
+            <span class="p-lbl">FAKE</span>
+            <div class="p-bg"><div class="p-fill fake" style="width:${fakeProb}%"></div></div>
+            <span class="p-pct">${fakeProb}%</span>
+          </div>
+        </div>
+      </div>`;
+    verdict.style.display = 'block';
+    const featDiv = document.getElementById('forgery-features');
+    featDiv.innerHTML = '<div class="gradcam-label">Feature Analysis</div>' +
+      Object.entries(data.features).map(([k,v]) =>
+        `<div class="feature-row"><span>${k}</span><span>${v}</span></div>`
+      ).join('');
+  } catch(e) {
+    alert('Analysis failed: ' + e.message);
+  } finally {
+    spinner.style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+// ── Loading state ──────────────────────────────
+function setLoading(prefix, loading) {
+  const btn = document.getElementById(prefix + '-btn');
+  const spinner = document.getElementById(prefix + '-spinner');
+  btn.disabled = loading;
+  spinner.style.display = loading ? 'block' : 'none';
+  const labels = { img: 'Analyse Image', vid: 'Analyse Video', aud: 'Analyse Voice' };
+  const loadingLabels = { img: 'Analysing...', vid: 'Analysing...', aud: 'Analysing...' };
+  // Update button text node (last text node)
+  const nodes = [...btn.childNodes].filter(n => n.nodeType === 3);
+  if (nodes.length) nodes[nodes.length-1].textContent = loading ? (' ' + loadingLabels[prefix]) : (' ' + labels[prefix]);
+}
+
+// ── Download PDF ───────────────────────────────
+async function downloadPDF(type) {
+  const data = type === 'video' ? vidData : type === 'voice' ? audData : imgData;
+  if (!data) return;
+
+  // Build conclusion text based on type
+  let conclusion = '';
+  if (type === 'image') {
+    const faceSwapped = data.label === 'FAKE';
+    const imageEdited = data.forgery_label === 'TAMPERED';
+    if (faceSwapped && imageEdited) conclusion = 'High Risk — Likely Deepfake. Both face-swapping and image editing detected.';
+    else if (faceSwapped) conclusion = 'Face Swap Detected — The face appears AI-generated or swapped.';
+    else if (imageEdited) conclusion = 'Possible Editing Detected — Face appears genuine but image shows signs of post-processing.';
+    else conclusion = 'No Manipulation Detected — Both face and image content appear genuine.';
+  } else if (type === 'video') {
+    conclusion = data.label === 'FAKE'
+      ? `Deepfake Detected — ${data.fake_frames || 0} of ${data.frames_analysed || 16} frames classified as fake.`
+      : `Authentic — All ${data.real_frames || 16} analysed frames appear genuine.`;
+  } else {
+    conclusion = data.label === 'FAKE'
+      ? 'AI-Generated Voice Detected — Audio shows signs of synthetic speech.'
+      : 'Authentic Voice — Audio appears to be genuine human speech.';
+  }
+
+  const pdfPayload = {
+    label: data.label,
+    confidence: data.confidence || 0,
+    fake_prob: data.fake_prob || 0,
+    real_prob: data.real_prob || 0,
+    filename: data.filename || 'upload',
+    image_b64: data.image_b64 || '',
+    gradcam_b64: data.gradcam_b64 || '',
+    media_type: type,
+    conclusion: conclusion,
+    // Image-specific: forgery
+    forgery_label: data.forgery_label || '',
+    forgery_confidence: data.forgery_confidence || 0,
+    // Video-specific
+    frames_analysed: data.frames_analysed || 0,
+    fake_frames: data.fake_frames || 0,
+    real_frames: data.real_frames || 0,
+    sample_frames: type === 'video' ? (data.sample_frames || []) : [],
+    // Voice-specific
+    duration: data.duration || 0,
+    model_used: data.model_used || '',
+    features: data.features || []
+  };
+  try {
+    const res = await fetch('/generate_pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pdfPayload)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      alert('PDF generation failed: ' + (err.error || res.statusText));
+      return;
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dflens_report_${type}_${data.label.toLowerCase()}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('PDF generation failed: ' + e.message);
+  }
+}
+
+// ── Drag & drop ────────────────────────────────
+['img-zone', 'vid-zone', 'aud-zone', 'forgery-zone'].forEach(id => {
+  const zone = document.getElementById(id);
+  if (!zone) return;
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('dragover');
+    const input = zone.querySelector('input');
+    input.files = e.dataTransfer.files;
+    input.dispatchEvent(new Event('change'));
+  });
+});
+</script>
+<!-- ════ UPLOAD REQUIRED MODAL ════ -->
+<div id="upload-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,8,30,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+  <div style="background:linear-gradient(135deg,#0a1628,#0d1f3c);border:1px solid rgba(100,180,255,0.25);border-radius:20px;padding:2.5rem 2rem;max-width:380px;width:90%;text-align:center;box-shadow:0 8px 48px rgba(0,0,0,0.6),0 0 0 1px rgba(56,189,248,0.1);">
+    <div style="font-size:3rem;margin-bottom:1rem;">📂</div>
+    <div style="font-family:'Orbitron',monospace;font-size:1rem;color:#7dd3fc;letter-spacing:0.08em;margin-bottom:0.6rem;" id="modal-title">No File Uploaded</div>
+    <p style="color:#94a3b8;font-size:0.88rem;line-height:1.6;margin-bottom:1.8rem;" id="modal-msg">Please upload a file before running analysis.</p>
+    <button onclick="closeUploadModal()" style="background:linear-gradient(90deg,#0ea5e9,#3b82f6);color:#fff;border:none;border-radius:10px;padding:0.7rem 2rem;font-size:0.9rem;font-family:'Orbitron',monospace;letter-spacing:0.06em;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Got it</button>
+  </div>
+</div>
+
+<script>
+function showUploadModal(title, msg) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-msg').textContent = msg;
+  const m = document.getElementById('upload-modal');
+  m.style.display = 'flex';
+}
+function closeUploadModal() {
+  document.getElementById('upload-modal').style.display = 'none';
+}
+document.getElementById('upload-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeUploadModal();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "model": "EfficientNet-B0",
+  "img_size": 224,
+  "classes": [
+    "fake",
+    "real"
+  ],
+  "accuracy": 0.93,
+  "precision": 0.9394,
+  "recall": 0.9159,
+  "f1_score": 0.9275,
+  "auc_roc": 0.9833,
+  "epochs": 10,
+  "batch_size": 16,
+  "learning_rate": 0.0001,
+  "frames_per_video": 10,
+  "max_videos": 300
+}
