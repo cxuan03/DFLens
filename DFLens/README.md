@@ -107,8 +107,3 @@ Note: Datasets are only required for retraining. The pretrained model weights (c
 - pytorch-grad-cam (Grad-CAM explainability)
 - ReportLab (PDF report generation)
 - matplotlib, seaborn (training visualisation)
-
-## Course Information
-
-INT4203E Artificial Intelligence — Individual Assignment  
-January 2026 Session
